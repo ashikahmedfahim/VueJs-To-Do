@@ -1,26 +1,44 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <div>
+    <Header></Header>
+    <Tasks :tasks="tasks" @delete-task="onDelete"></Tasks>
+    <AddTask @add-task="onAdd"></AddTask>
+  </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
-
+import Header from "./components/Header.vue";
+import Tasks from "./components/Tasks.vue";
+import AddTask from "./components/AddTask.vue";
 export default {
-  name: 'App',
+  name: "App",
   components: {
-    HelloWorld
-  }
-}
+    Header,
+    Tasks,
+    AddTask,
+  },
+  data() {
+    return {
+      tasks: [],
+    };
+  },
+  methods: {
+    onDelete(id) {
+      this.tasks = this.tasks.filter((task) => task.id !== id);
+    },
+    onAdd(title) {
+      const newTask = {
+        title,
+        id: this.tasks.length,
+      };
+      this.tasks.push(newTask);
+    },
+  },
+
+  create() {
+    console.log("created");
+  },
+};
 </script>
 
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
-</style>
+<style></style>
