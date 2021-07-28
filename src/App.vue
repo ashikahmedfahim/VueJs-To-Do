@@ -1,7 +1,12 @@
 <template>
   <div>
     <Header></Header>
-    <Tasks :tasks="tasks" @delete-task="onDelete"></Tasks>
+    <Tasks
+      :tasks="tasks"
+      @delete-task="onDelete"
+      @edit-task="onEdit"
+      @toggle-completed="onToggle"
+    ></Tasks>
     <AddTask @add-task="onAdd"></AddTask>
   </div>
 </template>
@@ -26,17 +31,26 @@ export default {
     onDelete(id) {
       this.tasks = this.tasks.filter((task) => task.id !== id);
     },
+    onEdit(id, title) {
+      this.tasks = this.tasks.map((task) => {
+        task.id === id ? (task.title = title) : "";
+        return task;
+      });
+    },
     onAdd(title) {
       const newTask = {
         title,
+        isCompleted: false,
         id: this.tasks.length,
       };
       this.tasks.push(newTask);
     },
-  },
-
-  create() {
-    console.log("created");
+    onToggle(id) {
+      this.tasks = this.tasks.map((task) => {
+        task.id === id ? (task.isCompleted = !task.isCompleted) : "";
+        return task;
+      });
+    },
   },
 };
 </script>
